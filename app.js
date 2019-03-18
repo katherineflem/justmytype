@@ -2,16 +2,16 @@
 //lowercase keyboard should be only one displayed when page loads 
 //hide the uppercase keyboard when page loads
 $(document).ready(function () {
-    let sentences =
+    var sentences =
         ['ten ate neite ate nee enet ite ate inet ent eate',
             'Too ato too nOt enot one totA not anot tOO aNot',
             'oat itain oat tain nate eate tea anne inant nean',
             'itant eate anot eat nato inate eat anot tain eat',
             'nee ene ate ite tent tiet ent ine ene ete ene ate'];
-    let upper = $("#keyboard-upper-container");
-    let lower = $("#keyboard-lower-container");
+    let gameOver = false
+    var upper = $("#keyboard-upper-container");
+    var lower = $("#keyboard-lower-container");
     upper.hide();
-    var gameOver = false
 
     //write Jquery to set up keyboard toggling--
     //while shift key is held down, hide the lowercase keyboard and show uppercase
@@ -41,13 +41,14 @@ $(document).ready(function () {
     $(document).keypress(function (e) {
         let keyPressed = $("#" + e.which);
         keyPressed.css("background-color", "yellow"); //highlight the currently expected letter in the on-screen sentence that should be typed next
-
         $("#yellow-block").animate({
             "marginLeft": "20px"
         });
         if (keyPressed === targetletter) {
-            let correctkey = $("√").css("color", "green"); //for each sentence, show a visual "log" of right/wrong per character by inserting one of the following into the div with id=feedback
-
+            let correctkey = $("<span></span>").addClass("glyphicon glyphicon-ok");
+            correctkey.appendTo("#feedback");
+        }else{
+            let correctkey =$("<span></span>").addClass("glyphicon glyphicon-remove")
             correctkey.appendTo("#feedback");
         }
 
@@ -55,7 +56,6 @@ $(document).ready(function () {
         let keyPressed = $("#" + e.which);
         keyPressed.css("background-color", "");
     })
-
 
 
 
