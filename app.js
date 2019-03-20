@@ -8,7 +8,7 @@ $(document).ready(function () {
     //         'oat itain oat tain nate eate tea anne inant nean',
     //         'itant eate anot eat nato inate eat anot tain eat',
     //         'nee ene ate ite tent tiet ent ine ene ete ene ate'];
-    var sentences = ["Katherine", "Marie", "Fleming"]
+    var sentences=["Katherine","Marie","Fleming"]
     var upper = $("#keyboard-upper-container");
     var lower = $("#keyboard-lower-container");
     upper.hide();
@@ -50,57 +50,48 @@ $(document).ready(function () {
         let currentSentence = sentences[index]
         if (index < sentences.length - 1) { //if we are done with all sentences
             if (cursor < currentSentence.length) { //if we complete the current sentence 
-                if (e.which === targetLetterCode) { //if we are typing the correct key...
+                if (e.which === targetLetterCode) { //if we are typing the correct key...checkmarks will be displayed
                     let correctkey = $("<span></span>").addClass("glyphicon glyphicon-ok");
                     correctkey.appendTo("#feedback");
-                } else {
+                } else { //if we aren't typing the correct key...x's will be displayed
                     let incorrectkey = $("<span></span>").addClass("glyphicon glyphicon-remove")
                     incorrectkey.appendTo("#feedback");
                     numberOfMistakes++;
 
                 }
-            } else {
-                $("#yellow-block").animate({ left: "15px" }, { duration: 1, easing: "linear" });
-                $("#feedback").empty();
-                index++;
+            } else { //if we complete the current sentence...
+                $("#yellow-block").animate({ left: "15px" }, { duration: 1, easing: "linear" });//the yellow block moves back to the left 15px
+                $("#feedback").empty();//feedback empty's out
+                index++; //next sentence displays
                 $("#sentence").text(sentences[index]);
-                cursor = 0;
-                targetletter = (sentences[index]).charAt(cursor)
+                cursor = 0; //current letter set back to 0(first letter)
+                targetletter = (sentences[index]).charAt(cursor) //target letter set back to the first letter of sentence
                 $("#target-letter").text(targetletter);
 
             }
 
         } else {//if done with all sentences (see up) then the game is over
-
-            let button = $("<button>Play Again?</button>");
-            $("#sentence").append(button);
-            button.css({
-                "background-color": "green",
-                "color": "white"
-            });
+            $("#sentence").empty();
+            $("#yellow-block").hide()
             let startTime = 0;
             let endTime = new Date().getTime();
-            let minutes = (endTime - startTime)/60
+            let minutes = (endTime - startTime) / 60
             wpm = Math.round(54 / minutes - 2 * numberOfMistakes)
             let gameOverMsg = $("<span></span>");
-            gameOverMsg.text("Game Over! Your wpm ="+ wpm).appendTo("#target-letter")
+            gameOverMsg.text("Game Over! Your wpm =" + wpm).appendTo("#sentence")
+            let button = $("<button>Play Again?</button>");
+            button.hide().delay(3000).fadeIn()
+            $("#target-letter").append(button);
+            button.css({
+                "background-color": "green",
+                "color": "white",
 
+            });
+            button.click(function () {
+                resetGame();
+            })
 
         }
-
-
-        //     gameOver === true;
-        //     let starttime = 0
-        //     let endtime = new Date().getTime();
-        //     let minutes = (endtime - starttime) / 60
-        //     wpm = Math.round(54 / minutes - 2 * numberOfMistakes) //have to define minutes?
-        //     $("#sentence").append(gameovermsg);
-        //     let button = $("<btn>Play Again?</btn>").appendto("#sentence");
-        //     button.click(function () {
-        //         resetGame();
-        //     })
-
-        // }
 
 
     })
@@ -110,20 +101,18 @@ $(document).ready(function () {
     }
 
     function resetGame() {
+        displaySentence(sentences)
+        $("#yellow-block").show();
         $("#yellow-block").animate({ left: "15px" }, { duration: 1, easing: "linear" });
         $("#feedback").empty();
-        index++;
-        $("#sentence").text(sentences[index]);
         cursor = 0;
-        targetletter = (sentences[index]).charAt(cursor)
+        var targetletter = (sentences[index]).charAt(cursor);// current sentence character at 0
         $("#target-letter").text(targetletter);
+
     }
 });
 
 
 
-    //there should be a delay so the user can see the score.
-    //then ask the user whether they would like to play again
-    //if yes, reset game back to start
-    //if no, leave as is
+
 
